@@ -71,9 +71,7 @@ print(tr.run("imgs/id_card.jpeg"))
 int unicode[MAX_WIDTH];
 float prob[MAX_WIDTH]; 
 
-auto ws = tr_recognize(0, 
-    (void *)"line.png", 0, 0, 0, 
-    unicode, prob, MAX_WIDTH);
+auto ws = tr_recognize(0, (void *)"line.png", 0, 0, 0, unicode, prob, MAX_WIDTH);
 
 tr_release(crnn_id);
 </pre>
