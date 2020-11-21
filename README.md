@@ -73,7 +73,7 @@ float prob[MAX_WIDTH];
 
 auto ws = tr_recognize(0, (void *)"line.png", 0, 0, 0, unicode, prob, MAX_WIDTH);
 
-tr_release(crnn_id);
+tr_release(0);
 </pre>
 
 #### 效果展示
