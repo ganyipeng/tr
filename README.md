@@ -14,7 +14,7 @@ Email: anycode@yahoo.com
 
 #### Requirements
 + Windows 7+/Ubuntu 16.04/Ubuntu 18.04
-+ python版本只需要安装numpy库，支持python2、python3
++ python2/python3，需要安装numpy库
 + Windows系统需要安装[VC_redist.x64.exe](https://download.visualstudio.microsoft.com/download/pr/89a3b9df-4a09-492e-8474-8f92c115c51d/B1A32C71A6B7D5978904FB223763263EA5A7EB23B2C44A0D60E90D234AD99178/VC_redist.x64.exe
 )
 
