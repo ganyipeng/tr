@@ -66,7 +66,7 @@ print(tr.run("imgs/id_card.jpeg"))
 #### C++ Example
 <pre>   tr_init(0, 0, "crnn.bin", NULL);
 
-	#define MAX_WIDTH		1024
+    #define MAX_WIDTH		512
 	int unicode[MAX_WIDTH];
 	float prob[MAX_WIDTH];
 
