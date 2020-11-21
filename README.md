@@ -47,7 +47,7 @@ python3 test-multi-thread.py  # 多线程测试
 + 若需要Web端调用，推荐参考<a href="https://github.com/alisen39/TrWebOCR">TrWebOCR</a>
 
 
-#### How To Use?
+#### Python Example
 <pre>import tr
 
 # detect text lines, return list of (cx, cy, width, height, angle)
@@ -63,6 +63,23 @@ print(tr.recognize("imgs/line.png"))
 print(tr.run("imgs/id_card.jpeg"))
 </pre>
 
+#### C++ Example
+<pre>   tr_init(0, 0, "crnn.bin", NULL);
+
+	#define MAX_WIDTH		1024
+	int unicode[MAX_WIDTH];
+	float prob[MAX_WIDTH];
+
+	auto ws = tr_recognize(0, 
+        (void *)"line.png", 0, 0, 0, 
+        unicode, prob, MAX_WIDTH);
+	for (int w = 0; w < ws; w++) {
+		if (unicode[w] < 0) continue;
+		std::wcout << wchar_t(unicode[w]);
+	}
+
+	tr_release(crnn_id);
+</pre>
 
 #### 效果展示
 <img src="https://gitee.com/microic/tr/raw/master/imgs/output/id_card/1.png" />
