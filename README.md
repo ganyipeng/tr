@@ -64,21 +64,21 @@ print(tr.run("imgs/id_card.jpeg"))
 </pre>
 
 #### C++ Example
-<pre>   tr_init(0, 0, "crnn.bin", NULL);
+<pre>tr_init(0, 0, "crnn.bin", NULL);
 
-    #define MAX_WIDTH		512
-	int unicode[MAX_WIDTH];
-	float prob[MAX_WIDTH];
+#define MAX_WIDTH		512
+int unicode[MAX_WIDTH];
+float prob[MAX_WIDTH];
 
-	auto ws = tr_recognize(0, 
-        (void *)"line.png", 0, 0, 0, 
-        unicode, prob, MAX_WIDTH);
-	for (int w = 0; w < ws; w++) {
-		if (unicode[w] < 0) continue;
-		std::wcout << wchar_t(unicode[w]);
-	}
+auto ws = tr_recognize(0, 
+    (void *)"line.png", 0, 0, 0, 
+    unicode, prob, MAX_WIDTH);
+for (int w = 0; w < ws; w++) {
+    if (unicode[w] < 0) continue;
+    std::wcout << wchar_t(unicode[w]);
+}
 
-	tr_release(crnn_id);
+tr_release(crnn_id);
 </pre>
 
 #### 效果展示
