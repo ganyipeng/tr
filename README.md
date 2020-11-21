@@ -14,7 +14,7 @@ Email: anycode@yahoo.com
 
 #### Requirements
 + python2/python3
-+ Ubuntu 16.04/Ubuntu 18.04
++ Windows 7+/Ubuntu 16.04/Ubuntu 18.04
 + numpy
 
 #### GPU版本安装说明
