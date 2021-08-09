@@ -46,3 +46,31 @@ python pdf2csv.py
 mkdir upload
 python app.py	
 ```
+
+=============================
+### 遇到的问题
+
+* 问题：dll-load-failed-error-when-importing-cv2
+* 解决办法：需要重启windows server服务器
+```
+https://izziswift.com/dll-load-failed-error-when-importing-cv2/
+
+Solution 4:
+Recently I have faced the similar issue in Azure Windows Server 2012 r2 . Tried all option with and without Anaconda but none of them helped. After lot of findings I found that mfplat.dll was missing which is related to Window Media Service.
+
+Hence you have to manually install the features so that you can get dll related to window media service.
+1.Turn windows features on or off
+2.Skip the roles screen and directly go to Feature screen
+3.Select “Desktop Experience” under “User Interfaces and Infrastructure”
+After this all required dll of media services for opencv would be available.
+So if you are planning to run your code in cloud(Window Server) then please dont forget to select Desktop Experience feature.
+```
+
+* 上面说的Turn windows features on or off在哪找，参考如下：
+```
+https://www.tenforums.com/tutorials/7247-turn-windows-features-off-windows-10-a.html
+
+控制面板=》程序和功能=》启用或关闭windows功能=》下一步 下一步 下一步=>
+此时到达功能界面=》选择最下方倒数第七个【用户界面和基础结构】=》
+桌面体验，执行安装，安装需要花费几分钟，安装之后重启电脑才能生效
+```
