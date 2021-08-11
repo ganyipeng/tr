@@ -38,7 +38,7 @@
                     id_card_side: 'front'
                 },
                 success: function (jsonResult) {
-                    alert(jsonResult);
+                    console.log('result-id-card:', jsonResult);
                     $("#json-result").html(JSON.stringify(jsonResult, null, 2));
                 }
             });
