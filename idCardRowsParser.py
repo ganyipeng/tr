@@ -50,6 +50,8 @@ def parse(rows):
             while i < len(str_array) and str_array[i] not in id_card_keys:
                 id_card_dict[id_key] += str_array[i]
                 i += 1
+        else:
+            i += 1
 
     return id_card_dict
 
