@@ -9,12 +9,6 @@ os.chdir(_BASEDIR)
 
 
 def test(img_path="gyp-line.png"):
-    print("recognize", tr.recognize("imgs/line.png"))
-
-    # img_path = "gyp-mul.png"
-    # img_path = "gyp-line.png"
-    # img_path = "imgs/name_card.jpg"
-
     img_pil = Image.open(img_path)
     try:
         if hasattr(img_pil, '_getexif'):
