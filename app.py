@@ -7,6 +7,7 @@ import pdfParser
 import uuid
 import gyptest
 import base64
+import idCardRowsParser
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'upload/'
@@ -56,7 +57,9 @@ class IdCard(Resource):
     file.write(imgdata)
     file.close()
     result = gyptest.test(fileName)
-    return result, 201
+    rows = result['rows']
+    id_card_dict = idCardRowsParser.parse(rows)
+    return id_card_dict, 200
 
 api.add_resource(Upload, '/upload2')
 api.add_resource(IdCard, '/id-card')
