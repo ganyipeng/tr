@@ -55,8 +55,8 @@ class IdCard(Resource):
     file = open(fileName, 'wb')
     file.write(imgdata)
     file.close()
-
-    return dict, 201
+    result = gyptest.test(fileName)
+    return result, 201
 
 api.add_resource(Upload, '/upload2')
 api.add_resource(IdCard, '/id-card')
