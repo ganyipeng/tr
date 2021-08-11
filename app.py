@@ -1,11 +1,12 @@
 from flask import Flask, render_template
-from flask_restful import Resource, Api, reqparse
+from flask_restful import Resource, Api, reqparse, request
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
 import os
 import pdfParser
 import uuid
 import gyptest
+import base64
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'upload/'
@@ -19,6 +20,10 @@ def hello_world():
 @app.route('/image')
 def hello_image():
     return gyptest.test()
+
+@app.route('/id-card-page')
+def id_card():
+    return render_template('id-card.html')
 
 class Upload(Resource):
   def post(self):
@@ -38,7 +43,23 @@ class Upload(Resource):
     # os.remove(os.path.join(app.config['UPLOAD_FOLDER'], fileName[0:-4])+'.docx')
     return result, 201
 
+class IdCard(Resource):
+  def post(self):
+    dict = request.form
+    image_base64 = dict['image']
+    image_base64_array = image_base64.split('base64,')
+    image_type = image_base64_array[0].replace("data:image/", '').replace(";", '')
+    image_valid_base64 = image_base64_array[1]
+    imgdata = base64.b64decode(image_valid_base64)
+    fileName = app.config['UPLOAD_FOLDER'] + str(uuid.uuid1()) + "."+image_type
+    file = open(fileName, 'wb')
+    file.write(imgdata)
+    file.close()
+
+    return dict, 201
+
 api.add_resource(Upload, '/upload2')
+api.add_resource(IdCard, '/id-card')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
