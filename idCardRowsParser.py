@@ -18,12 +18,30 @@ def check_value(arr):
     :return: ['姓名', '邵培远', '性别', '男', '民族', '汉']
     """
     result = []
+    # 拆分
     for key in arr:
         if key[0:2] in id_card_keys and key not in id_card_keys:
             result.append(key[0:2])
             result.append(key[2:])
         else:
             result.append(key)
+
+    # 寻找未识别的key
+    not_founded_key_list = []
+    for key in id_card_keys:
+        if key not in result:
+            not_founded_key_list.append(key)
+
+    # 合并
+    for key in not_founded_key_list:
+        i = 0
+        count = len(result)
+        while i < count - 1:
+            if result[i] + result[i + 1] == key:
+                result[i] += result[i + 1]
+                del result[i + 1]
+                break
+            i += 1
     return result
 
 
@@ -56,3 +74,11 @@ def parse(rows):
     return id_card_dict
 
 
+if __name__ == '__main__':
+    rows = [
+        ['姓'],
+        ['名'],
+        ['张三']
+    ]
+    result = parse(rows)
+    print(result)
