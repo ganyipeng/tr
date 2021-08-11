@@ -65,8 +65,8 @@
 <body>
 <p>
     <label>请选择一个文件：</label>
-    <input type="file" id="imagefile"/>
-    <input type="button" value="读取图像" onClick="readAsDataURL();"/>
+    <input type="file" id="imagefile" onChange="readAsDataURL();"/>
+    <input type="button" value="OCR识别" onClick="submitIdCard();"/>
 </p>
 <div name="result" id="result">
     <!-- 这里用来显示图片结果-->
