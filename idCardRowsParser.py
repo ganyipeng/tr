@@ -51,16 +51,7 @@ def parse(rows):
     # print(rows)
     # print(str_array)
     # print(id_card_keys)
-    id_card_dict = {
-        '姓名': '',
-        '性别': '',
-        '民族': '',
-        '出生': '',
-        '住址': '',
-        '公民身份号码': '',
-        '签发机关': '',
-        '有效期限': '',
-    }
+    id_card_dict = {}
     i = 0
     while i < len(str_array):
         if str_array[i] in id_card_keys:
