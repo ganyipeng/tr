@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 from flask_restful import Resource, Api, reqparse, request
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
@@ -8,6 +8,7 @@ import uuid
 import gyptest
 import base64
 import idCardRowsParser
+from img2csv import table_get
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'upload/'
@@ -25,6 +26,16 @@ def hello_image():
 @app.route('/id-card-page')
 def id_card():
     return render_template('id-card.html')
+
+@app.route('/table-image-page')
+def table_image():
+    return render_template('table-image.html')
+
+@app.route("/download/<filename>", methods=['GET'])
+def download_file2(filename):
+    directory = os.getcwd()
+
+    return send_from_directory(directory+'/upload/', filename, as_attachment=True)
 
 class Upload(Resource):
   def post(self):
@@ -61,8 +72,24 @@ class IdCard(Resource):
     id_card_dict = idCardRowsParser.parse(rows)
     return id_card_dict, 200
 
+class TableImage(Resource):
+  def post(self):
+    dict = request.form
+    image_base64 = dict['image']
+    image_base64_array = image_base64.split('base64,')
+    image_type = image_base64_array[0].replace("data:image/", '').replace(";", '')
+    image_valid_base64 = image_base64_array[1]
+    imgdata = base64.b64decode(image_valid_base64)
+    fileName = app.config['UPLOAD_FOLDER'] + str(uuid.uuid1()) + "."+image_type
+    file = open(fileName, 'wb')
+    file.write(imgdata)
+    file.close()
+    table_data = table_get(fileName)
+    return {'fileName':fileName.replace(app.config['UPLOAD_FOLDER'],'')+'.csv', 'tableData':table_data}, 200
+
 api.add_resource(Upload, '/upload2')
 api.add_resource(IdCard, '/id-card')
+api.add_resource(TableImage, '/table-image')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
