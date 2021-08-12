@@ -85,7 +85,7 @@ class TableImage(Resource):
     file.write(imgdata)
     file.close()
     table_data = table_get(fileName)
-    return {'fileName':fileName.replace(app.config['UPLOAD_FOLDER'],'')+'.csv', 'tableData':table_data}, 200
+    return {'download_url':'download/'+fileName.replace(app.config['UPLOAD_FOLDER'],'')+'.csv', 'tableData':table_data}, 200
 
 api.add_resource(Upload, '/upload2')
 api.add_resource(IdCard, '/id-card')

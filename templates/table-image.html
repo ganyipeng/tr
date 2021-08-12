@@ -41,7 +41,7 @@
                     // alert(jsonResult);
                     $("#json-result").html(JSON.stringify(jsonResult, null, 2));
 		    console.log('download...', 'download/'+jsonResult.fileName);
-		    download('download/'+jsonResult.fileName, "hh");
+		    download(jsonResult.download_url, "hh");
                 }
             });
         }
@@ -57,11 +57,15 @@ function download(url,name){
     <style>
         #result {
             width: 50%;
+            height: calc(100% - 100px);
+            overflow-y: auto;
             float: left;
         }
 
         #json-result {
             width: 50%;
+	    height: calc(100% - 100px);
+	    overflow-y: auto;
 	    float: left;
             white-space: pre-wrap;
         }
