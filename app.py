@@ -80,12 +80,13 @@ class TableImage(Resource):
     image_type = image_base64_array[0].replace("data:image/", '').replace(";", '')
     image_valid_base64 = image_base64_array[1]
     imgdata = base64.b64decode(image_valid_base64)
-    fileName = app.config['UPLOAD_FOLDER'] + str(uuid.uuid1()) + "."+image_type
-    file = open(fileName, 'wb')
+    fileName = app.config['UPLOAD_FOLDER'] + str(uuid.uuid1());
+    #"."+image_type
+    file = open(fileName+'.'+image_type, 'wb')
     file.write(imgdata)
     file.close()
-    table_data = table_get(fileName)
-    return {'download_url':'download/'+fileName.replace(app.config['UPLOAD_FOLDER'],'')+'.csv', 'tableData':table_data}, 200
+    table_data = table_get(fileName, image_type)
+    return {'download_url':'download/'+fileName.replace(app.config['UPLOAD_FOLDER'],'')+'.xlsx', 'tableData':table_data}, 200
 
 api.add_resource(Upload, '/upload2')
 api.add_resource(IdCard, '/id-card')
