@@ -50,8 +50,8 @@ def get_row_x(img):
     img = bin_img(img)
     img = erode_img(img, (2, 1), 40)
     img = dilate_img(img, (2, 2), 1)
-    cv2.imshow("", img)
-    cv2.waitKey(0)
+    # cv2.imshow("", img)
+    # cv2.waitKey(0)
     x_dict = {} # 对很多行进行取样，统计在竖线上的x坐标
     for x in range(0, img.shape[0], 50):  #每隔50个像素点进行一行取样
         for y in range(img.shape[1]):  # 遍历这一行
