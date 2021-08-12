@@ -44,7 +44,7 @@ def get_table(ocr_results, row_x):
     for i in range(len(data_lines)):  # i遍历剩下的行
         # print(data_lines[i])
         tmp_line = []  # 用来帮助收集value的临时变量，每次收集一行
-        for k in range(len(row_x)):
+        for k in range(len(row_x)-1):
             tmp_line.append("")
         for data in data_lines[i]:
             loc_x = float(data[0])
@@ -78,19 +78,18 @@ def run_tr(img_path):
         pass
 
     MAX_SIZE = 1600 # 图片的大小最好不超过 1600
-    if img_pil.height > MAX_SIZE or img_pil.width > MAX_SIZE:
-        scale = max(img_pil.height / MAX_SIZE, img_pil.width / MAX_SIZE)
+    scale = max(img_pil.height / MAX_SIZE, img_pil.width / MAX_SIZE)
 
-        new_width = int(img_pil.width / scale + 0.5)
-        new_height = int(img_pil.height / scale + 0.5)
-        img_pil = img_pil.resize((new_width, new_height), Image.ANTIALIAS)
+    new_width = int(img_pil.width / scale + 0.5)
+    new_height = int(img_pil.height / scale + 0.5)
+    img_pil = img_pil.resize((new_width, new_height), Image.ANTIALIAS)
 
     img_cv = cv2.cvtColor(numpy.asarray(img_pil), cv2.COLOR_RGB2BGR)
     row_x = getVerticalBorder.get_row_x(img_cv) # 获取表格竖线的坐标
+    print(row_x)
 
     if len(img_pil.split()) >= 3:
         r, g, b = img_pil.split()
-        # r = img_pil.split()
         img_pil = r # 取印章不明显的通道
 
     threshold = 150 # 对图片进行二值化的阈值，进一步抹除印章
@@ -106,7 +105,6 @@ def run_tr(img_path):
 
     ocr_results = tr.run(img_pil, flag=tr.FLAG_RECT) #运行tr，获得带位置的ocr结果
     res = get_table(ocr_results, row_x)
-
     return res
 
 
