@@ -9,6 +9,7 @@ import gyptest
 import base64
 import idCardRowsParser
 from img2csv import table_get
+import traceback
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'upload/'
@@ -85,7 +86,15 @@ class TableImage(Resource):
     file = open(fileName+'.'+image_type, 'wb')
     file.write(imgdata)
     file.close()
-    table_data = table_get(fileName, image_type)
+    try:
+        table_data = table_get(fileName, image_type)
+    except Exception as e:
+        print(e.args)
+        print(str(e))
+        print(repr(e))
+        error_info = "exception" + str(e)
+        trace_info = msg = traceback.format_exc()
+        return {'error':error_info, "trace_info":trace_info}, 200
     return {'download_url':'download/'+fileName.replace(app.config['UPLOAD_FOLDER'],'')+'.xlsx', 'tableData':table_data}, 200
 
 api.add_resource(Upload, '/upload2')

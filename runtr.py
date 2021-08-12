@@ -88,9 +88,10 @@ def run_tr(img_path):
     img_cv = cv2.cvtColor(numpy.asarray(img_pil), cv2.COLOR_RGB2BGR)
     row_x = getVerticalBorder.get_row_x(img_cv) # 获取表格竖线的坐标
 
-
-    r, g, b = img_pil.split()
-    img_pil = r # 取印章不明显的通道
+    if len(img_pil.split()) >= 3:
+        r, g, b = img_pil.split()
+        # r = img_pil.split()
+        img_pil = r # 取印章不明显的通道
 
     threshold = 150 # 对图片进行二值化的阈值，进一步抹除印章
 

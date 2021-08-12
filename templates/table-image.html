@@ -41,7 +41,11 @@
                     // alert(jsonResult);
                     $("#json-result").html(JSON.stringify(jsonResult, null, 2));
 		    console.log('download...', 'download/'+jsonResult.fileName);
-		    download(jsonResult.download_url, "hh");
+			if(jsonResult.download_url){
+				download(jsonResult.download_url, "hh");
+			}else{
+				$("#json-result").html("<pre style='color:red'>"+jsonResult.trace_info+"</pre>");
+			};
                 }
             });
         }
