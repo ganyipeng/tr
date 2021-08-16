@@ -1,5 +1,6 @@
 import cv2
 import numpy
+from PIL import Image
 
 '''
 获取表格中每一条竖线的x坐标
@@ -67,5 +68,7 @@ def get_row_x(img):
     for key in x_dict.keys():
         if x_dict[key] > img.shape[0]/50 * 1.5: #如果超过取样数的1.5倍，则说明这个x坐标是竖线的
             row_x.append(key)
-
+    print('row_x:::',row_x)
+    row_x.sort()
+    print('row_x_sort:::',row_x)
     return row_x
