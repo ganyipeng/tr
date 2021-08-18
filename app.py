@@ -28,6 +28,10 @@ def hello_image():
 def id_card():
     return render_template('id-card.html')
 
+@app.route('/general-basic-page')
+def general_basic():
+    return render_template('general-basic.html')
+
 @app.route('/table-image-page')
 def table_image():
     return render_template('table-image.html')
@@ -97,9 +101,39 @@ class TableImage(Resource):
         return {'error':error_info, "trace_info":trace_info}, 200
     return {'download_url':'download/'+fileName.replace(app.config['UPLOAD_FOLDER'],'')+'.xlsx', 'tableData':table_data}, 200
 
+class GeneralBasic(Resource):
+  def post(self):
+    dict = request.form
+    image_base64 = dict['image']
+    image_base64_array = image_base64.split('base64,')
+    image_type = image_base64_array[0].replace("data:image/", '').replace(";", '')
+    image_valid_base64 = image_base64_array[1]
+    imgdata = base64.b64decode(image_valid_base64)
+    fileName = app.config['UPLOAD_FOLDER'] + str(uuid.uuid1()) + "."+image_type
+    file = open(fileName, 'wb')
+    file.write(imgdata)
+    file.close()
+    try:
+        result = gyptest.test(fileName)
+        rows = result['rows']
+        words = []
+        if rows:
+          for r in rows:
+            if r[0]:
+              words.append(r[0])
+    except Exception as e:
+        print(e.args)
+        print(str(e))
+        print(repr(e))
+        error_info = "exception" + str(e)
+        trace_info = msg = traceback.format_exc()
+        return {'error':error_info, "trace_info":trace_info}, 200
+    return {'words':words}, 200
+
 api.add_resource(Upload, '/upload2')
 api.add_resource(IdCard, '/id-card')
 api.add_resource(TableImage, '/table-image')
+api.add_resource(GeneralBasic, '/general-basic')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
