@@ -106,7 +106,7 @@ def parse_peoples(peoples_str: 'list'):
         'noteDrawer': people_split_colon[2][1].strip()
     }
 
-    return {'seller': peoples}
+    return {'peoples': peoples}
 
 
 def parse_invoice_info(invoice_info_str: 'list'):
