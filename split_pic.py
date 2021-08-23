@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
+from PIL import Image
 import sys
+import invoiceBlocks
 
 
 def get_transverse(binary):
@@ -204,11 +206,17 @@ def bin_img(img: 'numpy.ndarray'):
     return bin_image
 
 
+def show(im):
+    im = Image.fromarray(im.astype('uint8'))
+    im.show()
+
+
 def split_pic(image):
-    # image = cv2.imread("file.jpg", 1)
+    # image = cv2.imread("invoice-error.png", 1)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    # binary = cv2.adaptiveThreshold(~gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 35, -5)
-    binary = bin_img(gray)
+    binary = cv2.adaptiveThreshold(~gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 35, -5)
+    # show(binary)
+    # binary = bin_img(gray)
     img_transverse = get_transverse(binary)
     img_vertical = get_vertical(binary)
     img_points = cv2.bitwise_and(img_transverse,img_vertical)
@@ -221,4 +229,9 @@ def split_pic(image):
         points.append(point)
 
     blocks = get_blocks(binary, points)
-    return blocks
+    print('blocks', len(blocks), blocks)
+    bbbb = invoiceBlocks.parse(image)
+    print('bbbbbb', len(bbbb), bbbb)
+    return bbbb
+
+# split_pic(1)

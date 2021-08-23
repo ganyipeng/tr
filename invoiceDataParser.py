@@ -3,6 +3,8 @@
 
 
 def get_rows(result_values: 'str_list'):
+    print('result_values', result_values)
+    print('len', len(result_values))
     return [result_values[0:4], result_values[4:12], result_values[12:14], result_values[14:18], result_values[18], result_values[19]]
 
 
@@ -56,8 +58,8 @@ def parse_row1(arg_row: 'list'):
         items.append(item_dict)
 
     summary = {
-        'amount': cells[5][items_count+1].strip(),
-        'rateAmount': cells[7][items_count+1].strip()
+        'amount': cells[5][items_count+1].strip()[1:],
+        'rateAmount': cells[7][items_count+1].strip()[1:]
     }
 
     return {'items': items, 'summary': summary}
@@ -72,7 +74,7 @@ def parse_row2(arg_row: 'list'):
     cc = [t for t in tt if t != '' and t != '\n']
     if len(cc) == 3:
         row2_dict['upperCase'] = cc[1]
-        row2_dict['lowerCase'] = cc[2].split('¥')[1]
+        row2_dict['lowerCase'] = cc[2][5:]
     return {'priceTaxSummary': row2_dict}
 
 
@@ -93,10 +95,14 @@ def parse_row3(arg_row: 'list'):
     return {'seller': seller}
 
 
-def parse_peoples(peoples_str: 'list'):
+def parse_peoples(peoples_str: 'str'):
     # "深圳电子普通发票  \n统  友票    发票代码:144032109110  \n  燃  发票号码:07209023  \n架圳市税务朐  \n开票日期:2021年03月24日  \n校验码:bcba4  \n"
     peoples_list = peoples_str.split("\n")
-    peoples_str = peoples_list[1]
+    if '收款人' in peoples_list[0]:
+        peoples_str = peoples_list[0]
+    else:
+        peoples_str = peoples_list[1]
+
     peoples_split_blank = peoples_str.split(" ")
     peoples_split_blank_and_remove_blank = [people for people in peoples_split_blank if people != '']
     people_split_colon = [people.split(':') for people in peoples_split_blank_and_remove_blank]
@@ -173,6 +179,9 @@ def _test():
 
 
 if __name__ == '__main__':
-    _test()
+    ss = '    收款人:微信平台  复核:微信平台  开票人:微信平台  销售方:(章)  (4)      \n03 0 5 5 4 16  6  \n发票查验请登录国家税务总局深圳市税务局网站:  shenzhen.chinatax.gov.cn  (首页>办税服务>涉税查询>发票真伪查验)  \n'
+    # parse_peoples(ss)
+    # _test()
+    parse_row2(['', "凶  叁佰元整  (小写)￥300.00  \n"])
 
 

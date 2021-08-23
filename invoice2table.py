@@ -3,6 +3,7 @@ import cv2
 from PIL import Image, ImageDraw, ImageFont
 import numpy
 import split_pic
+import invoiceBlocks
 import xlwt
 import sys
 
@@ -70,7 +71,7 @@ def run_tr(img_path, excel_path):
     img_pil = img_pil.resize((new_width, new_height), Image.ANTIALIAS)
 
     img_cv = cv2.cvtColor(numpy.asarray(img_pil), cv2.COLOR_RGB2BGR)
-    blocks = split_pic.split_pic(img_cv)
+    blocks = invoiceBlocks.parse(img_cv)
     min_width, min_height = get_min_width_height(blocks)
 
     img_pil = img_pil.convert("L")
