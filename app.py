@@ -10,6 +10,8 @@ import base64
 import idCardRowsParser
 from img2csv import table_get
 import traceback
+import invoice2table
+import invoiceDataParser
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'upload/'
@@ -35,6 +37,12 @@ def general_basic():
 @app.route('/table-image-page')
 def table_image():
     return render_template('table-image.html')
+
+
+@app.route('/invoice-image-page')
+def invoice_image():
+    return render_template('invoice-image.html')
+
 
 @app.route("/download/<filename>", methods=['GET'])
 def download_file2(filename):
@@ -101,6 +109,33 @@ class TableImage(Resource):
         return {'error':error_info, "trace_info":trace_info}, 200
     return {'download_url':'download/'+fileName.replace(app.config['UPLOAD_FOLDER'],'')+'.xlsx', 'tableData':table_data}, 200
 
+
+class InvoiceImage(Resource):
+  def post(self):
+    dict = request.form
+    image_base64 = dict['image']
+    image_base64_array = image_base64.split('base64,')
+    image_type = image_base64_array[0].replace("data:image/", '').replace(";", '')
+    image_valid_base64 = image_base64_array[1]
+    imgdata = base64.b64decode(image_valid_base64)
+    fileName = app.config['UPLOAD_FOLDER'] + str(uuid.uuid1());
+    file = open(fileName+'.'+image_type, 'wb')
+    file.write(imgdata)
+    file.close()
+    try:
+        table_data = invoice2table.run_tr(fileName+'.'+image_type, fileName+'.xls')
+        invoice_data = invoiceDataParser.parse(table_data)
+    except Exception as e:
+        print(e.args)
+        print(str(e))
+        print(repr(e))
+        error_info = "exception" + str(e)
+        trace_info = msg = traceback.format_exc()
+        return {'error':error_info, "trace_info":trace_info}, 200
+    return {'download_url':'download/'+fileName.replace(app.config['UPLOAD_FOLDER'],'')+'.xls', 'invoiceData':invoice_data}, 200
+
+
+
 class GeneralBasic(Resource):
   def post(self):
     dict = request.form
@@ -133,6 +168,7 @@ class GeneralBasic(Resource):
 api.add_resource(Upload, '/upload2')
 api.add_resource(IdCard, '/id-card')
 api.add_resource(TableImage, '/table-image')
+api.add_resource(InvoiceImage, '/invoice-image')
 api.add_resource(GeneralBasic, '/general-basic')
 
 if __name__ == '__main__':
