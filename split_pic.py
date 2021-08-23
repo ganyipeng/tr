@@ -198,10 +198,17 @@ def get_blocks(binary, points):
 
     return blocks
 
+
+def bin_img(img: 'numpy.ndarray'):
+    ret, bin_image=cv2.threshold(img, 180, 255, cv2.THRESH_BINARY_INV)
+    return bin_image
+
+
 def split_pic(image):
     # image = cv2.imread("file.jpg", 1)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    binary = cv2.adaptiveThreshold(~gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 35, -5)
+    # binary = cv2.adaptiveThreshold(~gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 35, -5)
+    binary = bin_img(gray)
     img_transverse = get_transverse(binary)
     img_vertical = get_vertical(binary)
     img_points = cv2.bitwise_and(img_transverse,img_vertical)
