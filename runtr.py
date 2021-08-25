@@ -64,6 +64,7 @@ def run_tr(img_path):
     :return: 格式化的表格数据
     '''
     img_pil = Image.open(img_path)
+    init_width = img_pil.width
     try:
         if hasattr(img_pil, '_getexif'):
             orientation = 274
@@ -108,8 +109,10 @@ def run_tr(img_path):
             table.append(0)
         else:
             table.append(1)
-
-    img_pil = img_pil.point(table, "1") # 对图片进行二值化
+    
+    if init_width > 500:
+        print('init_width', init_width)
+        img_pil = img_pil.point(table, "1") # 对图片进行二值化
 
     ocr_results = tr.run(img_pil, flag=tr.FLAG_RECT) #运行tr，获得带位置的ocr结果
     res = get_table(ocr_results, row_x)
