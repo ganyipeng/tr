@@ -112,7 +112,7 @@ def run_tr(img_path):
     
     if init_width > 500:
         print('init_width', init_width)
-        img_pil = img_pil.point(table, "1") # 对图片进行二值化
+        # img_pil = img_pil.point(table, "1") # 对图片进行二值化
 
     ocr_results = tr.run(img_pil, flag=tr.FLAG_RECT) #运行tr，获得带位置的ocr结果
     res = get_table(ocr_results, row_x)

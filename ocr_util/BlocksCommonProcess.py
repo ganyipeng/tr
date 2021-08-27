@@ -3,7 +3,7 @@
 import cv2
 from PIL import Image
 import numpy
-import ImageCommonProcess
+from . import ImageCommonProcess
 
 # code from：https://blog.csdn.net/weixin_42194239/article/details/91975662
 

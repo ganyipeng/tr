@@ -12,6 +12,7 @@ from img2csv import table_get
 import traceback
 import invoice2table
 import invoiceDataParser
+from ocr_util import ParseTableImageToRows
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'upload/'
@@ -100,6 +101,7 @@ class TableImage(Resource):
     file.close()
     try:
         table_data = table_get(fileName, image_type)
+        # table_data = ParseTableImageToRows.run(fileName+'.'+image_type)
     except Exception as e:
         print(e.args)
         print(str(e))
